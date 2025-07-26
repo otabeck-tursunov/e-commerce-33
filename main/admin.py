@@ -1,3 +1,11 @@
-from django.contrib import admin
+from _ast import Sub
 
-# Register your models here.
+from django.contrib import admin
+from .models import *
+
+admin.site.register(Banner)
+admin.site.register(Category)
+admin.site.register(SubCategory)
+admin.site.register(Product)
+admin.site.register(Image)
+
