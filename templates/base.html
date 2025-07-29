@@ -74,12 +74,12 @@
 						</a>
 					</div>
 					<div class="widget-header mr-3">
-						<a href="#" class="widget-view">
+						<a href="{% url 'wishlist' %}" class="widget-view">
 							<div class="icon-area">
-								<i class="fa fa-comment-dots"></i>
-								<span class="notify">1</span>
+								<i class="fa fa-thumbs-up"></i>
+								<span class="notify">{{ request.user.favorite_set.count }}</span>
 							</div>
-							<small class="text"> Message </small>
+							<small class="text"> Wish List </small>
 						</a>
 					</div>
 					<div class="widget-header mr-3">
@@ -91,7 +91,7 @@
 						</a>
 					</div>
 					<div class="widget-header">
-						<a href="#" class="widget-view">
+						<a href="{% url 'my-cart' %}" class="widget-view">
 							<div class="icon-area">
 								<i class="fa fa-shopping-cart"></i>
 							</div>
@@ -134,7 +134,7 @@
 						<a href="profile-main.html">Profile main</a>
 						<a href="page-profile-orders.html">Profile orders</a>
 						<a href="page-profile-seller.html">Profile seller</a>
-						<a href="page-profile-wishlist.html">Profile wishlist</a>
+						<a href="wishlist.html">Profile wishlist</a>
 						<a href="profile-settings.html">Profile setting</a>
 						<a href="page-profile-address.html">Profile address</a>
 						<a href="rtl-page-index-1.html">RTL home page</a>

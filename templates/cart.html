@@ -36,14 +36,14 @@
                                     <td>
                                         <div class="input-group mb-3 input-spinner">
                                             <div class="input-group-prepend">
-                                                <a href="/savat_q/{{ savat.id }}/">
+                                                <a href="{% url 'increment' cart_item.id %}">
                                                     <button class="btn btn-light" type="button" id="button-plus"> +
                                                     </button>
                                                 </a>
                                             </div>
-                                            <input type="text" class="form-control" value="3">
+                                            <input type="text" class="form-control" value="{{ cart_item.amount }}">
                                             <div class="input-group-append">
-                                                <a href="/savat_k/{{ savat.id }}/">
+                                                <a href="{% url 'decrement' cart_item.id %}">
                                                     <button class="btn btn-light" type="button" id="button-minus">
                                                         &minus;
                                                     </button>
@@ -53,15 +53,15 @@
                                     </td>
                                     <td>
                                         <div class="price-wrap">
-                                            <var class="price">$69</var>
-                                            <small class="text-muted"> $23 each </small>
+                                            <var class="price">${{ cart_item.get_total_price }}</var>
+                                            <small class="text-muted"> ${{ cart_item.product.price }} </small>
                                         </div> <!-- price-wrap .// -->
                                     </td>
                                     <td class="text-right">
                                         <a data-original-title="Save to Wishlist" title=""
-                                           href="/tanlangan_qosh/{{ savat.id }}/" class="btn btn-light"
-                                           data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-                                        <a href="/ochirish/{{ savat.id }}/" class="btn btn-light btn-round"> Remove</a>
+                                           href="{% url 'add-to-wishlist-for-cart' cart_item.product.id %}" class="btn btn-light"
+                                           data-toggle="tooltip"> <i class="fa fa-heart" {% if cart_item.product.id in wishlist_products %} style="color: orangered" {% endif %}></i></a>
+                                        <a href="{% url 'remove-from-cart' cart_item.product.id %}" class="btn btn-light btn-round"> Remove</a>
                                     </td>
                                 </tr>
                             {% empty %}

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import *
 
@@ -121,3 +121,48 @@ class ProductView(LoginRequiredMixin, View):
         product.save()
 
         return self.get(request, slug)
+
+
+class WishListView(LoginRequiredMixin, View):
+    def get(self, request):
+        favorites = Favorite.objects.filter(user=request.user)
+        context = {
+            'favorites': favorites,
+        }
+        return render(request, 'wishlist.html', context)
+
+
+class AddToWishListView(LoginRequiredMixin, View):
+    def get(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+
+        favorites = Favorite.objects.filter(user=request.user, product=product)
+        if favorites.exists():
+            return redirect('wishlist')
+
+        Favorite.objects.create(
+            user=request.user, product=product
+        )
+        return redirect('wishlist')
+
+
+class RemoveFromWishListView(LoginRequiredMixin, View):
+    def get(self, request, favorite_id):
+        favorite = get_object_or_404(Favorite, id=favorite_id)
+        favorite.delete()
+        return redirect('wishlist')
+
+
+class AddToWishListForCartView(LoginRequiredMixin, View):
+    def get(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+
+        favorites = Favorite.objects.filter(user=request.user, product=product)
+        if favorites.exists():
+            favorites.delete()
+            return redirect('my-cart')
+
+        Favorite.objects.create(
+            user=request.user, product=product
+        )
+        return redirect('my-cart')
