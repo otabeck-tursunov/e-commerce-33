@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
@@ -52,6 +52,12 @@ class SubCategoryView(LoginRequiredMixin, View):
         if max_price is not None:
             products = products.filter(price__lte=max_price)
 
+        paginator = Paginator(products, 1)
+
+        pages = range(1, paginator.num_pages + 1)
+        page = request.GET.get('page')
+        products = paginator.get_page(page)
+
         context = {
             'subcategory': subcategory,
             'view': view,
@@ -62,6 +68,10 @@ class SubCategoryView(LoginRequiredMixin, View):
             'filter_brands': filter_brands,
             'min_price': min_price,
             'max_price': max_price,
+            'pages': pages,
+            'page': int(page),
+            'pr_page': int(page) - 1 if int(page) > 1 else 1,
+            'nt_page': int(page) + 1 if int(page) < paginator.num_pages else paginator.num_pages,
         }
 
         if view is not None:

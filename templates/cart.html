@@ -105,15 +105,15 @@
                         <div class="card-body">
                             <dl class="dlist-align">
                                 <dt>Total price:</dt>
-                                <dd class="text-right">USD {{ sum }}</dd>
+                                <dd class="text-right">USD {{ total_price_without_discount }}</dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Discount:</dt>
-                                <dd class="text-right">USD {{ chg }}</dd>
+                                <dd class="text-right">USD {{ total_discount }}</dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Total:</dt>
-                                <dd class="text-right  h5"><strong>${{ yakuniy }}</strong></dd>
+                                <dd class="text-right  h5"><strong> USD {{ total_price }}</strong></dd>
                             </dl>
                             <hr>
                             <p class="text-center mb-3">

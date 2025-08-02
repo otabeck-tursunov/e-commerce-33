@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
@@ -8,9 +10,23 @@ class CartView(LoginRequiredMixin, View):
         cart_items = request.user.cartitem_set.all()
         wishlist_products = request.user.favorite_set.values_list('product__id', flat=True)
 
+        # Discounts
+        total_discount = 0
+        total_price_without_discount = 0
+        for cart_item in cart_items:
+            total_price_without_discount += cart_item.product.price * cart_item.amount
+            if cart_item.product.discount_set.filter(end_date__lt=datetime.today()).exists():
+                discount = cart_item.product.discount_set.filter(end_date__lt=datetime.today()).last().amount * cart_item.amount
+                total_discount += discount
+
+        total_price = total_price_without_discount - total_discount
+
         context = {
             'cart_items': cart_items,
             'wishlist_products': wishlist_products,
+            'total_discount': total_discount,
+            'total_price_without_discount': total_price_without_discount,
+            'total_price': total_price,
         }
         return render(request, 'cart.html', context)
 
