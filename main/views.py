@@ -55,7 +55,7 @@ class SubCategoryView(LoginRequiredMixin, View):
         paginator = Paginator(products, 1)
 
         pages = range(1, paginator.num_pages + 1)
-        page = request.GET.get('page')
+        page = request.GET.get('page', 0)
         products = paginator.get_page(page)
 
         context = {
